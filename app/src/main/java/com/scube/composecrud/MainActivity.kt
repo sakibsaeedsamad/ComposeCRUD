@@ -59,17 +59,187 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.ViewModelProvider
+import com.example.registrationservlet.viewmodel.UserViewModel
+import com.scube.composecrud.model.Gender
+import com.scube.composecrud.model.InsertModel
+import com.scube.composecrud.model.Role
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
+
+    var roleList = ArrayList<Any>()
+    var genderList = ArrayList<Any>()
+
+    var roleDropdown: ArrayList<Role> = ArrayList<Role>()
+    var roleDesc: ArrayList<String> = ArrayList<String>()
+
+    var gendDesc: ArrayList<String> = ArrayList<String>()
+
+    var roleCode: String = ""
+
+    var genderString: String = ""
+
+    private lateinit var userViewModel: UserViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        getRoleData()
+        getGenderData()
+        observeViewModel()
+
         setContent {
 
             MaterialUIApp(this)
             //showDatePicker(this)
+
+        }
+    }
+
+    private fun observeViewModel() {
+        userViewModel.userInsert_response_error.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+
+                Log.e("Insert-->", "Error Found")
+
+            }
+        })
+
+        userViewModel.userInsert_response.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+                if ("E".equals(it.errorCode)) {
+
+                    Log.d("MessageD ", it.errorMessage.toString())
+                    Toast.makeText(
+                        this,
+                        "Message : " + it.errorMessage.toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+
+
+                }
+                else{
+                   // cleanFields()
+                    Toast.makeText(
+                        this,
+                        "User Inserted Successfully. " ,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+
+            }
+        })
+
+        userViewModel.roleGet_response_error.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+
+                Log.e("RoleList-->", "Error Found")
+
+            }
+        })
+
+        userViewModel.roleGet_response.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+
+                if (it.size >= 1) {
+
+                    for (i in it.indices) {
+
+                        val code = it[i].code
+                        val desc = it[i].desc
+                        roleList.add(code!!)
+                        roleList.add(desc!!)
+
+                    }
+
+                    //addDropDownList()
+
+                } else {
+                    Log.e("RoleList-->", "Error Found")
+                }
+
+
+            }
+        })
+
+
+        userViewModel.genderGet_response_error.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+
+                Log.e("Gender-->", "Error Found")
+
+            }
+        })
+
+        userViewModel.genderGet_response.observe(this, androidx.lifecycle.Observer {
+            it?.let {
+
+
+                if (it.size >= 1) {
+
+                    for (i in it.indices) {
+
+                        val genCode = it[i].genCode
+                        val genDesc = it[i].genDesc
+                        genderList.add(genCode!!)
+                        genderList.add(genDesc!!)
+
+                    }
+
+                    getGenderList()
+
+
+                } else {
+                    Log.e("Gender-->", "Error Found")
+                }
+
+
+            }
+        })
+
+
+    }
+
+    private fun getGenderData() {
+        var model = InsertModel()
+
+        model.requestCode = ("3")
+
+        this.let { it1 ->
+            userViewModel.doGetGenderList(model)
+        }
+    }
+
+    private fun getRoleData() {
+        var model = InsertModel()
+
+        model.requestCode = ("2")
+
+        this.let { it1 -> userViewModel.doGetAllRoleList(model) }
+    }
+
+    fun getGenderList() {
+
+
+        if (genderList != null) {
+            roleDropdown.clear()
+            val i: Iterator<Any> = genderList.iterator()
+            while (i.hasNext()) {
+                val roleModel = Gender(i.next().toString(), i.next().toString())
+                gendDesc.add(roleModel.genDesc.toString())
+
+            }
+            //addRadioButtons(gendDesc.size)
 
         }
     }

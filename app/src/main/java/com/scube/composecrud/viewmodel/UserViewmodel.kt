@@ -1,14 +1,14 @@
-package com.example.registrationservlet.viewmodel
+package com.scube.composecrud.viewmodel
 
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.registrationservlet.model.Gender
-import com.example.registrationservlet.model.InsertModel
-import com.example.registrationservlet.model.Role
-import com.example.registrationservlet.model.User
-import com.example.registrationservlet.retrofit.RetrofitClient
+import com.scube.composecrud.model.Gender
+import com.scube.composecrud.model.InsertModel
+import com.scube.composecrud.model.Role
+import com.scube.composecrud.model.User
+import com.scube.composecrud.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver

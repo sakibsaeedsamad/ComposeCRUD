@@ -1,9 +1,9 @@
 package com.scube.composecrud.retrofit
 
-import com.example.registrationservlet.model.Gender
-import com.example.registrationservlet.model.InsertModel
-import com.example.registrationservlet.model.Role
-import com.example.registrationservlet.model.User
+import com.scube.composecrud.model.Gender
+import com.scube.composecrud.model.InsertModel
+import com.scube.composecrud.model.Role
+import com.scube.composecrud.model.User
 import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import okhttp3.OkHttpClient

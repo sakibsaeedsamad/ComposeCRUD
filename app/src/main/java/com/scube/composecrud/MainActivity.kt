@@ -84,6 +84,11 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var userViewModel: UserViewModel
 
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -156,6 +161,8 @@ class MainActivity : ComponentActivity() {
 
                         val code = it[i].code
                         val desc = it[i].desc
+
+                        Log.e("RoleList-->", "${it[i].desc}")
                         roleList.add(code!!)
                         roleList.add(desc!!)
 
@@ -191,6 +198,7 @@ class MainActivity : ComponentActivity() {
 
                         val genCode = it[i].genCode
                         val genDesc = it[i].genDesc
+                        Log.e("Gender-->", "${it[i].genDesc}")
                         genderList.add(genCode!!)
                         genderList.add(genDesc!!)
 
@@ -545,7 +553,9 @@ fun DropDownList(
                     selectedString(it)
                 }
             ) {
-                Text(it, modifier = Modifier.wrapContentWidth().align(Alignment.CenterVertically))
+                Text(it, modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.CenterVertically))
             }
         }
     }
@@ -582,7 +592,10 @@ fun CountrySelection() {
             )
         }
         Spacer(
-            modifier = Modifier.matchParentSize().background(Color.Transparent).padding(10.dp)
+            modifier = Modifier
+                .matchParentSize()
+                .background(Color.Transparent)
+                .padding(10.dp)
                 .clickable(
                     onClick = { isOpen.value = true }
                 )
